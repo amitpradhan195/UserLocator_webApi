@@ -19,6 +19,13 @@ const userSchema = new mongoose.Schema({
     },
     profileImage:{
         type: String
+    },
+    deviceAddress:{
+        type: Number,
+        default : function() {
+            return Math.floor(Math.random()*100000) + 899999
+          },
+        index: {unique: true}
     }
 
 });

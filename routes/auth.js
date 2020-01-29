@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('./models/users');
+const User = require('../models/users');
 
 module.exports.verifyUser = (req, res, next) => {
     let authHeader = req.headers.authorization;
@@ -10,7 +10,7 @@ module.exports.verifyUser = (req, res, next) => {
         return next(err);
     }
 
-    let token = authHeader.split('')[1];
+    let token = authHeader.split(' ')[1];
     let data;
 
     try{
@@ -20,12 +20,12 @@ module.exports.verifyUser = (req, res, next) => {
         throw new Error('Token could not be verified!');
     }
 
-    req.userId = data._id;
-    next();
+    // req.userId = data._id;
+    // next();
 
     User.findById(data._id)
         .then((user) => {
             req.user = user;
             next();
-        })
+        }).catch(next);
 }

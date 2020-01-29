@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 const router = express.Router();
 
+
 router.post('/signup', (req, res, next) => {
     let password = req.body.password;
     bcrypt.hash(password, 10, function (err, hash){
@@ -13,7 +14,7 @@ router.post('/signup', (req, res, next) => {
         User.create({
             username:req.body.username,
             password:hash,
-            fullName: req.body.fullname,
+            fullName: req.body.fullName,
             contactNo: req.body.contactNo,
             profileImage: req.body.profileImage
         }).then((user) => {
@@ -40,7 +41,7 @@ router.post('/login', (req, res, next) => {
                             return next(err);
                         }
                         let token = jwt.sign({_id:user._id}, process.env.SECRET);
-                        res.json({status: 'Login Successful', user: user._id, token: token});
+                        res.json({status: 'Login Successful', user: user._id, fullName: user.fullName, username: user.username, token: token});
                     }).catch(next);
             }
         }).catch(next);
