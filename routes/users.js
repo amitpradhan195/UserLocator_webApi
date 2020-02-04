@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
+const auth = require('./auth');
 const router = express.Router();
 
 
@@ -19,7 +20,7 @@ router.post('/signup', (req, res, next) => {
             profileImage: req.body.profileImage
         }).then((user) => {
             let token = jwt.sign({_id: user._id}, process.env.SECRET);
-            res.json({status: "Signup success", user: user._id, token:token});
+            res.json({status: "Signup success", user: user._id, token:token, fullName: user.fullName, username: user.username});
         }).catch(next);
     });
 });
@@ -46,5 +47,16 @@ router.post('/login', (req, res, next) => {
             }
         }).catch(next);
 });
+
+router.get('/me', auth.verifyUser, (req, res, next) => {
+    res.json({ _id: req.user._id, fullName: req.user.fullName, contactNo: req.user.contactNo, deviceAddress: req.user.deviceAddress, profileImage: req.user.profileImage });
+})
+
+router.put('/updateProfile', auth.verifyUser, (req, res, next) => {
+    User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
+    .then((user) => {
+        res.json({ _id: user._id, fullName: req.user.fullName, contactNo: req.user.contactNo, deviceAddress: req.user.deviceAddress, profileImage: req.user.profileImage});
+    }).catch(next);
+})
 
 module.exports = router;

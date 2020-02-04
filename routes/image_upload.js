@@ -24,7 +24,7 @@ const upload = multer({
 
 const uploadRouter = express.Router();
 
-uploadRouter.route('/')
+uploadRouter.route('/editProfilePic')
     .post(upload.single('myImages'), (req, res) => {
         res.json(req.file);
     });
