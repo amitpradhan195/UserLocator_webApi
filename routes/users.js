@@ -54,7 +54,7 @@ router.get('/me', auth.verifyUser, (req, res, next) => {
 })
 
 
-// Update profile route
+// Update user profile route
 router.put('/updateProfile', auth.verifyUser, (req, res, next) => {
     User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
     .then((user) => {
