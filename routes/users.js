@@ -48,10 +48,13 @@ router.post('/login', (req, res, next) => {
         }).catch(next);
 });
 
+// Get user details route
 router.get('/me', auth.verifyUser, (req, res, next) => {
     res.json({ _id: req.user._id, fullName: req.user.fullName, contactNo: req.user.contactNo, deviceAddress: req.user.deviceAddress, profileImage: req.user.profileImage });
 })
 
+
+// Update profile route
 router.put('/updateProfile', auth.verifyUser, (req, res, next) => {
     User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
     .then((user) => {
