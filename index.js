@@ -1,12 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const morgan = require('morgan');
 const userRouter = require('./routes/users');
-const auth = require('./routes/auth');
+const auth = require('./auth');
 const dotenv = require('dotenv').config();
 const imageRouter = require('./routes/image_upload');
 const cors = require('cors');
 
 const app = express();
+app.use(morgan('tiny'));
 app.options('*', cors());
 app.use(cors());
 app.use(express.json());
