@@ -48,6 +48,14 @@ router.post('/login', (req, res, next) => {
         }).catch(next);
 });
 
+router.get('/getFriends', auth.verifyUser, (req, res, next) => {
+    User.find({})
+    .then((friends)=>{
+        if(friends == null) throw new Error("Friends not found!")
+        res.json(friends);
+    }).catch(next);
+})
+
 router.post('/verifyPassword', auth.verifyUser, (req, res, next) => {
     User.findById(req.user._id)
         .then((user)=>{
@@ -78,20 +86,20 @@ router.put('/updateProfile', auth.verifyUser, (req, res, next) => {
 });
 
 router.put('/updatePassword', auth.verifyUser, (req, res, next) => {
-    let password = req.body.password;
-    bcrypt.hash(password, 10, function (err, hash){
-        if(err){
-            throw new Error('Could not hash!');
-        }
-        else{
-            password = hash;
-        }
+        let password = req.body.password;
+        bcrypt.hash(password, 10, function (err, hash){
+            if(err){
+                throw new Error('Could not hash!');
+            }
+            else{
+                password = hash;
+            }
 
-    User.findByIdAndUpdate(req.user._id, {$set:{password:password}}, {new: true})
-    .then((user)=>{
-        res.json({status: 'ok', password: req.user.password});
-    }).catch(next);
-});
+        User.findByIdAndUpdate(req.user._id, {$set:{password:password}}, {new: true})
+        .then((user)=>{
+            res.json({status: 'ok', password: req.user.password});
+        }).catch(next);
+    });
 
 });
 
