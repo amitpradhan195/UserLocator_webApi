@@ -49,7 +49,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/getFriends', auth.verifyUser, (req, res, next) => {
-    User.find({})
+    User.find({_id : {$ne: req.user._id}})
     .then((friends)=>{
         if(friends == null) throw new Error("Friends not found!")
         res.json(friends);
