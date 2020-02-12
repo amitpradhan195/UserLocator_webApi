@@ -42,7 +42,7 @@ router.post('/login', (req, res, next) => {
                             return next(err);
                         }
                         let token = jwt.sign({_id:user._id}, process.env.SECRET);
-                        res.json({status: 'Login Successful', user: user._id, fullName: user.fullName, username: user.username, token: token, profileImage: user.profileImage});
+                        res.json({status: 'Login Successful', userId: user._id, fullName: user.fullName, username: user.username, token: token, profileImage: user.profileImage});
                     }).catch(next);
             }
         }).catch(next);

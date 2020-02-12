@@ -6,6 +6,7 @@ const auth = require('./auth');
 const dotenv = require('dotenv').config();
 const imageRouter = require('./routes/image_upload');
 const cors = require('cors');
+const messageRouter = require('./routes/message');
 
 const app = express();
 app.use(morgan('tiny'));
@@ -23,6 +24,7 @@ mongoose.connect(process.env.URL, {useNewUrlParser: true, useUnifiedTopology: tr
 app.use('/users', userRouter);
 app.use(auth.verifyUser);
 app.use('/uploadImage', imageRouter);
+app.use('/message', messageRouter);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
