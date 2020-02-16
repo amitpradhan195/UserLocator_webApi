@@ -9,8 +9,8 @@ const cors = require('cors');
 const messageRouter = require('./routes/message');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(process.env.PORT);
-server.close();
+const io = require('socket.io')(server);
+
 
 app.use(morgan('tiny'));
 app.options('*', cors());
